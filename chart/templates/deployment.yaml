@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name}}-deployment
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: helloapp
+  template:
+    metadata:
+      labels:
+        app: helloapp
+    spec:
+      containers:
+      - name: {{ .Values.pods.name }}
+        image: {{ .Values.pods.image }}:{{ .Values.pods.tag }}
+        ports:
+        - containerPort: {{ .Values.containerPort }}
+        resources:
+          limits:
+            memory: {{ .Values.limits.memory | quote }}
+            cpu: {{ .Values.limits.cpu | quote }}
+          requests:
+            memory: {{ .Values.requests.memory | quote }}
+            cpu: {{ .Values.requests.cpu | quote }}
