@@ -8,7 +8,7 @@ replicaCount: 3
 containerPort: 5001
 
 service:
-  type: LoadBalancer
+  type: ClusterIP
   port: 5001
   targetPort: 5001
 
@@ -18,3 +18,12 @@ limits:
 requests:
   memory: "64Mi"
   cpu: "250m"
+
+labels:
+  app: helloapp
+
+ingress:
+  enabled: false
+  className: nginx
+  host: helloapp.local
+  path: /
