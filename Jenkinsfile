@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    environment {
+        APP_NAME = 'hello-app'
+        VERSION = '1.0.0'
+        ENVIRONMENT = 'dev'
+    }
+
     stages {
 
         stage('Checkout Info') {
@@ -25,13 +31,24 @@ pipeline {
                 sh 'cat build/app.txt'
             }
         }
-        
+
         stage('Jenkins Env Info') {
             steps {
                 sh 'echo "Build number: $BUILD_NUMBER"'
                 sh 'echo "Job name: $JOB_NAME"'
                 sh 'echo "Workspace: $WORKSPACE"'
+            
             }
         }   
+
+        stage('App Info') {
+            steps {
+                sh 'echo "App name: $APP_NAME"'
+                sh 'echo "Version: $VERSION"'
+                sh 'echo "Environment: $ENVIRONMENT"'
+                sh 'echo "Artifact name: $APP_NAME-$VERSION-$BUILD_NUMBER.txt"'
+            }
+        }
+    
     }
 }
