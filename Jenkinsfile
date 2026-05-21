@@ -24,6 +24,13 @@ pipeline {
             }
         }
 
+        stage('Break Pipeline') {
+            steps {
+                sh 'echo "Breaking pipeline..."'
+                sh 'exit 1'
+            }
+        }
+        
         stage('Build Artifact') {
             steps {
                 sh 'mkdir -p build'
