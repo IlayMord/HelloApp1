@@ -1,54 +1,35 @@
 pipeline {
     agent any
 
-    environment {
-        APP_NAME = 'hello-app'
-        VERSION = '1.0.0'
-        ENVIRONMENT = 'dev'
+    parameters {
+        choice(
+            name: 'ENV',
+            choices: ['dev', 'qa', 'prod'],
+            description: 'Choose environment'
+        )
+
+        string(
+            name: 'VERSION',
+            defaultValue: '1.0.0',
+            description: 'Application version'
+        )
     }
 
     stages {
 
-        stage('Checkout Info') {
+        stage('Show Params') {
             steps {
-                echo 'Pipeline from Git is running'
-                sh 'pwd'
-                sh 'ls -la'
+                sh 'echo "Environment: $ENV"'
+                sh 'echo "Version: $VERSION"'
             }
         }
 
-        stage('Python Check') {
-            steps {
-                sh 'python3 --version'
-                sh 'python3 -m py_compile app.py'
-            }
-        }
-
-        stage('Build') {
+        stage('Build Artifact') {
             steps {
                 sh 'mkdir -p build'
-                sh 'echo "build artifact" > build/app.txt'
-                sh 'cat build/app.txt'
+                sh 'echo "artifact for $ENV version $VERSION" > build/info.txt'
+                sh 'cat build/info.txt'
             }
         }
-
-        stage('Jenkins Env Info') {
-            steps {
-                sh 'echo "Build number: $BUILD_NUMBER"'
-                sh 'echo "Job name: $JOB_NAME"'
-                sh 'echo "Workspace: $WORKSPACE"'
-            
-            }
-        }   
-
-        stage('App Info') {
-            steps {
-                sh 'echo "App name: $APP_NAME"'
-                sh 'echo "Version: $VERSION"'
-                sh 'echo "Environment: $ENVIRONMENT"'
-                sh 'echo "Artifact name: $APP_NAME-$VERSION-$BUILD_NUMBER.txt"'
-            }
-        }
-    
     }
 }
