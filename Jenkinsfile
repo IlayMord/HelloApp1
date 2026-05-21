@@ -25,5 +25,13 @@ pipeline {
                 sh 'cat build/app.txt'
             }
         }
+        
+        stage('Jenkins Env Info') {
+            steps {
+                sh 'echo "Build number: $BUILD_NUMBER"'
+                sh 'echo "Job name: $JOB_NAME"'
+                sh 'echo "Workspace: $WORKSPACE"'
+            }
+        }   
     }
 }
