@@ -32,6 +32,19 @@ pipeline {
             }
         }
 
+
+        stage('Use Credential') {
+            steps {
+                withCredentials([
+                    string(credentialsId: 'demo-token', variable: 'TOKEN')
+                ]) {
+
+                    sh 'echo "Token exists"'
+                    sh 'echo "$TOKEN"'
+                }
+            }
+        }
+        
         stage('Quality Checks') {
             parallel {
                 stage('Unit Tests') {
@@ -59,7 +72,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Production Approval') {
 
             when {
