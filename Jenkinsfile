@@ -31,6 +31,20 @@ pipeline {
                 sh 'cat build/info.txt'
             }
         }
+
+        stage('Production Approval') {
+
+            when {
+                expression {
+                    ENV == 'prod'
+                }
+            }
+
+            steps {
+                input message: 'Approve deployment to production?'
+            }
+        }
+        
         stage('Production Deploy') {
 
             when {
