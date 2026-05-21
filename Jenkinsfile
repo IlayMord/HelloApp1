@@ -32,6 +32,34 @@ pipeline {
             }
         }
 
+        stage('Quality Checks') {
+            parallel {
+                stage('Unit Tests') {
+                    steps {
+                        sh 'echo "Running unit tests"'
+                        sh 'sleep 5'
+                        sh 'echo "Unit tests passed"'
+                    }
+                }
+
+                stage('Lint') {
+                    steps {
+                        sh 'echo "Running lint"'
+                        sh 'sleep 5'
+                        sh 'echo "Lint passed"'
+                    }
+                }
+
+                stage('Security Scan') {
+                    steps {
+                        sh 'echo "Running security scan"'
+                        sh 'sleep 5'
+                        sh 'echo "Security scan passed"'
+                    }
+                }
+            }
+        }
+        
         stage('Production Approval') {
 
             when {
@@ -44,7 +72,7 @@ pipeline {
                 input message: 'Approve deployment to production?'
             }
         }
-        
+
         stage('Production Deploy') {
 
             when {
