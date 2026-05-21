@@ -24,13 +24,6 @@ pipeline {
             }
         }
 
-        stage('Break Pipeline') {
-            steps {
-                sh 'echo "Breaking pipeline..."'
-                sh 'exit 1'
-            }
-        }
-        
         stage('Build Artifact') {
             steps {
                 sh 'mkdir -p build'
@@ -38,7 +31,19 @@ pipeline {
                 sh 'cat build/info.txt'
             }
         }
-    }
+        stage('Production Deploy') {
+
+            when {
+                expression {
+                    ENV == 'prod'
+                }
+            }
+
+            steps {
+                sh 'echo "Deploying to PRODUCTION"'
+            }
+        }
+            }
 
     post {
 
